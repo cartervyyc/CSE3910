@@ -1,0 +1,93 @@
+{
+    "intents": [
+        {
+            "tag": "greeting",
+            "patterns": [
+                "hello",
+                "hi",
+                "hey",
+                "good morning",
+                "what's up",
+                "yo"
+            ],
+            "responses": [
+                "Hey there!",
+                "Yo, what’s up?",
+                "Hello man!",
+                "Hey! How’s it going?"
+            ]
+        },
+        {
+            "tag": "goodbye",
+            "patterns": [
+                "bye",
+                "see you",
+                "later",
+                "goodnight",
+                "peace out"
+            ],
+            "responses": [
+                "Catch you later!",
+                "See ya man!",
+                "Peace ✌️",
+                "Goodbye!"
+            ]
+        },
+        {
+            "tag": "thanks",
+            "patterns": [
+                "thanks",
+                "thank you",
+                "appreciate it",
+                "cheers"
+            ],
+            "responses": [
+                "No problem!",
+                "Anytime!",
+                "Glad to help!"
+            ]
+        },
+        {
+            "tag": "math_help",
+            "patterns": [
+                "can you help me with math",
+                "what is 5 plus 5",
+                "solve 12 minus 8",
+                "math question",
+                "calculate"
+            ],
+            "responses": [
+                "Sure thing, what do you want me to calculate?",
+                "Math time! What’s the problem?",
+                "Shoot me a math question!"
+            ]
+        },
+        {
+            "tag": "joke",
+            "patterns": [
+                "tell me a joke",
+                "make me laugh",
+                "say something funny"
+            ],
+            "responses": [
+                "Why did the computer show up late? It had a hard drive 😆",
+                "Parallel lines have so much in common… it’s a shame they’ll never meet.",
+                "My code never has bugs. It just develops random features."
+            ]
+        },
+        {
+            "tag": "ai_project",
+            "patterns": [
+                "what are you",
+                "who made you",
+                "what is this project",
+                "are you an AI"
+            ],
+            "responses": [
+                "I’m a simple AI chatbot built for our C++/Python/HTML project!",
+                "Yo, I’m an AI assistant powered by a custom-trained model.",
+                "Made by students, for students — that’s me!"
+            ]
+        }
+    ]
+}
