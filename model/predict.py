@@ -1,5 +1,4 @@
-import random, pickle, json, sys
-
+import random, pickle, json, sys, re
 # Import saved model
 with open("model.pkl", "rb") as savedModel:
     model = pickle.load(savedModel)
@@ -14,17 +13,27 @@ with open("intents.json", "r") as savedData:
 
 # Get a response from the ML model
 def get_response(text):
-    # Predict what tag the text falls under
-    train = vectorizer.transform([text])
-    tag = model.predict(train)[0]
+    responses = []
+    
+    # Use regex to split by commas, periods, question marks, exclamation marks, semicolons
+    sentences = re.split(r'[,.!?;]+', text)
+    sentences = [s.strip() for s in sentences if s.strip()]  # remove blanks
 
-    # Cross referencing each tag in the json file with the tag that we predicted
-    # Edge cases fall under else so that we still get an answer from the model
-    for intent in data["intents"]:
-        if intent["tag"] == tag:
-            return random.choice(intent["responses"])
-        else:
-            return "I'm not sure about that one"
+    for sentence in sentences:
+        # Predict what tag the text falls under
+        train = vectorizer.transform([sentence.strip()])
+        tag = model.predict(train)[0]
+
+        # Cross referencing each tag in the json file with the tag that we predicted
+        # Edge cases fall under else so that we still get an answer from the model
+        for intent in data["intents"]:
+            if intent["tag"] == tag:
+                responses.append(random.choice(intent["responses"]))
+                break
+        
+    if responses:
+        return " ".join(responses)
+    return "I'm not sure about that one"
 
 if __name__ == "__main__":
 # Get the first command line argument passed in
