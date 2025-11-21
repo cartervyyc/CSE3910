@@ -1,4 +1,6 @@
 import random, pickle, json, sys, re
+from nltk.tokenize import sent_tokenize
+
 # Import saved model
 with open("model.pkl", "rb") as savedModel:
     model = pickle.load(savedModel)
@@ -16,8 +18,8 @@ def get_response(text):
     responses = []
     
     # Use regex to split by commas, periods, question marks, exclamation marks, semicolons
-    sentences = re.split(r'[,.!?;]+', text)
-    sentences = [s.strip() for s in sentences if s.strip()]  # remove blanks
+    text = text.lower()
+    sentences = sent_tokenize(text)
 
     for sentence in sentences:
         # Predict what tag the text falls under

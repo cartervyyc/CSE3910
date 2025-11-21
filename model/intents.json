@@ -6,31 +6,37 @@
                 "hello",
                 "hi",
                 "hey",
-                "good morning",
+                "yo",
                 "what's up",
-                "yo"
+                "good morning",
+                "good evening",
+                "how's it going",
+                "hey there",
+                "sup"
             ],
             "responses": [
-                "Hey there!",
-                "Yo, what’s up?",
-                "Hello man!",
-                "Hey! How’s it going?"
+                "Yo, what's good?",
+                "Hey man, what's up?",
+                "Yo! How you doing?"
             ]
         },
         {
             "tag": "goodbye",
             "patterns": [
                 "bye",
+                "goodbye",
                 "see you",
-                "later",
-                "goodnight",
-                "peace out"
+                "catch you later",
+                "i'm heading out",
+                "gotta go",
+                "talk later",
+                "see ya",
+                "later bro"
             ],
             "responses": [
-                "Catch you later!",
-                "See ya man!",
-                "Peace ✌️",
-                "Goodbye!"
+                "Aight, take it easy.",
+                "Later man.",
+                "Peace out."
             ]
         },
         {
@@ -39,54 +45,48 @@
                 "thanks",
                 "thank you",
                 "appreciate it",
-                "cheers"
+                "thx",
+                "ty",
+                "you're a lifesaver",
+                "nice thanks man"
             ],
             "responses": [
-                "No problem!",
-                "Anytime!",
-                "Glad to help!"
+                "Yo no problem.",
+                "Anytime bro.",
+                "Glad to help."
             ]
         },
         {
-            "tag": "math_help",
+            "tag": "help_request",
             "patterns": [
-                "can you help me with math",
-                "what is 5 plus 5",
-                "solve 12 minus 8",
-                "math question",
-                "calculate"
+                "i need help",
+                "can you help me",
+                "help me out",
+                "i'm confused",
+                "can you explain",
+                "i need assistance",
+                "bro i need help"
             ],
             "responses": [
-                "Sure thing, what do you want me to calculate?",
-                "Math time! What’s the problem?",
-                "Shoot me a math question!"
+                "Yeah man, what do you need?",
+                "I'm here, what's up?",
+                "Shoot your question bro."
             ]
         },
         {
-            "tag": "joke",
+            "tag": "bot_info",
             "patterns": [
-                "tell me a joke",
-                "make me laugh",
-                "say something funny"
-            ],
-            "responses": [
-                "Why did the computer show up late? It had a hard drive 😆",
-                "Parallel lines have so much in common… it’s a shame they’ll never meet.",
-                "My code never has bugs. It just develops random features."
-            ]
-        },
-        {
-            "tag": "ai_project",
-            "patterns": [
+                "what can you do",
+                "who are you",
                 "what are you",
-                "who made you",
-                "what is this project",
-                "are you an AI"
+                "tell me about yourself",
+                "what is this bot",
+                "what do you do"
             ],
             "responses": [
-                "I’m a simple AI chatbot built for our C++/Python/HTML project!",
-                "Yo, I’m an AI assistant powered by a custom-trained model.",
-                "Made by students, for students — that’s me!"
+                "I'm your little AI homie, built for this project.",
+                "Just a chatbot doing my thing.",
+                "I'm here to talk and help you out man."
             ]
         }
     ]

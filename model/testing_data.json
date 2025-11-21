@@ -1,0 +1,44 @@
+{
+    "test_samples": [
+        {
+            "text": "hey man",
+            "tag": "greeting"
+        },
+        {
+            "text": "good morning",
+            "tag": "greeting"
+        },
+        {
+            "text": "i'm heading out now",
+            "tag": "goodbye"
+        },
+        {
+            "text": "thanks bro",
+            "tag": "thanks"
+        },
+        {
+            "text": "can you explain this",
+            "tag": "help_request"
+        },
+        {
+            "text": "what are you exactly",
+            "tag": "bot_info"
+        },
+        {
+            "text": "yo what's up",
+            "tag": "greeting"
+        },
+        {
+            "text": "catch you later",
+            "tag": "goodbye"
+        },
+        {
+            "text": "bro i need help",
+            "tag": "help_request"
+        },
+        {
+            "text": "tell me about yourself",
+            "tag": "bot_info"
+        }
+    ]
+}
