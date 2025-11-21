@@ -13,25 +13,38 @@ with open("vectorizer.pkl", "rb") as savedVectorizer:
 with open("intents.json", "r") as savedData:
     data = json.load(savedData)
 
+# Predict tag function that also returns a probability of how confident it is
+def predict_tag(vect):
+    predicted_tag = model.predict(vect)[0]
+    probabilities = model.predict_proba(vect)[0]
+    confidence = max(probabilities)
+    return predicted_tag, confidence
+
+
 # Get a response from the ML model
 def get_response(text):
     responses = []
     
-    # Use regex to split by commas, periods, question marks, exclamation marks, semicolons
+    # Preprocess the text to ensure consistent formatting for the model
     text = text.lower()
+    text = re.sub(r"[^a-zA-Z0-9\s]", "", text).strip()  # keep only letters/numbers/spaces
     sentences = sent_tokenize(text)
 
     for sentence in sentences:
         # Predict what tag the text falls under
-        train = vectorizer.transform([sentence.strip()])
-        tag = model.predict(train)[0]
+        vect = vectorizer.transform([sentence])
+        tag = model.predict(vect)[0]
+        tag, confidence = predict_tag(vect)
 
         # Cross referencing each tag in the json file with the tag that we predicted
         # Edge cases fall under else so that we still get an answer from the model
-        for intent in data["intents"]:
-            if intent["tag"] == tag:
-                responses.append(random.choice(intent["responses"]))
-                break
+        if confidence > 0.45:
+            for intent in data["intents"]:
+                if intent["tag"] == tag:
+                    responses.append(random.choice(intent["responses"]))
+                    break
+        else:
+            responses.append("I got no clue what you are trying to say")
         
     if responses:
         return " ".join(responses)
