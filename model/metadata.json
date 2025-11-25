@@ -1,0 +1,9 @@
+{
+    "model_version": "0.0.1",
+    "training_samples": 129,
+    "vocab_size": 278,
+    "preprocessing": {
+        "lowercase": true,
+        "punctuation_removed": true
+    }
+}
