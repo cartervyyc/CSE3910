@@ -49,29 +49,24 @@ def is_math_input(text):
 
 # ---------------- GENERAL RESPONSE ----------------
 def get_general_response(text):
-    responses = []
-    sentences = re.split(r"[.,?!]", text)
+    cleaned = clean_text(text)
 
-    for sentence in sentences:
-        cleaned = clean_text(sentence)
+    vect = vectorizer.transform([cleaned])
+    tag, confidence = predict_general_tag(vect)
 
-        vect = vectorizer.transform([cleaned])
-        tag, confidence = predict_general_tag(vect)
+    conversation_history["last_tag"] = tag
+    conversation_history["history"].append(cleaned)
 
-        conversation_history["last_tag"] = tag
-        conversation_history["history"].append(cleaned)
+    print(f"{tag} {confidence}")
 
-        print(f"{tag} {confidence}")
+    if confidence > 0.30:
+        for intent in data["intents"]:
+            if intent["tag"] == tag:
+                return random.choice(intent["responses"])
+            
+                r
+    return ""
 
-        if confidence > 0.30:
-            for intent in data["intents"]:
-                if intent["tag"] == tag:
-                    responses.append(random.choice(intent["responses"]))
-                    break
-    
-    if responses:
-        return " ".join(responses)
-    return "I'm not sure about that one"
 
 # ---------------- MATH RESPONSE ----------------
 def get_math_response(text):
@@ -105,9 +100,24 @@ def get_math_response(text):
 
 # ---------------- ROUTER ----------------
 def get_response(text):
-    if is_math_input(text):
-        return get_math_response(text)
-    return get_general_response(text)
+    sentences = re.split(r"[.!?]", text)
+    final_responses = []
+
+    for sentence in sentences:
+        sentence = sentence.strip()
+        if not sentence:
+            continue
+
+        if is_math_input(sentence):
+            final_responses.append(get_math_response(sentence))
+        else:
+            final_responses.append(get_general_response(sentence))
+
+    if final_responses:
+        return " ".join(final_responses)
+
+    return "I'm not sure about that one."
+
 
 # ---------------- MAIN ----------------
 if __name__ == "__main__":
