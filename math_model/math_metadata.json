@@ -1,7 +1,7 @@
 {
-    "model_version": "0.0.2",
-    "training_samples": 129,
-    "vocab_size": 278,
+    "model_version": "0.0.0",
+    "training_samples": 30,
+    "vocab_size": 104,
     "preprocessing": {
         "lowercase": true,
         "punctuation_removed": true

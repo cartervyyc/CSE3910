@@ -1,0 +1,64 @@
+{
+    "intents": [
+        {
+            "tag": "add",
+            "patterns": [
+                "add 5 and 7",
+                "what is 10 + 3",
+                "sum of 8 and 9",
+                "what is 4 plus 6",
+                "add these two numbers"
+            ]
+        },
+        {
+            "tag": "subtract",
+            "patterns": [
+                "subtract 9 from 20",
+                "what is 15 - 6",
+                "difference between 8 and 3",
+                "what is 12 minus 5",
+                "take away 4 from 10"
+            ]
+        },
+        {
+            "tag": "multiply",
+            "patterns": [
+                "multiply 4 and 6",
+                "what is 3 * 7",
+                "product of 8 and 2",
+                "what is 5 times 9",
+                "do 6 multiplied by 4"
+            ]
+        },
+        {
+            "tag": "divide",
+            "patterns": [
+                "divide 20 by 5",
+                "what is 12 / 3",
+                "quotient of 18 and 6",
+                "what is 10 divided by 2",
+                "split 40 by 8"
+            ]
+        },
+        {
+            "tag": "area_rectangle",
+            "patterns": [
+                "area of a rectangle",
+                "find the area",
+                "calculate my area",
+                "what is the area of length times width",
+                "rectangle area formula"
+            ]
+        },
+        {
+            "tag": "perimeter",
+            "patterns": [
+                "find the perimeter",
+                "calculate perimeter",
+                "perimeter of a square",
+                "what is the outside length",
+                "add up the sides for perimeter"
+            ]
+        }
+    ]
+}

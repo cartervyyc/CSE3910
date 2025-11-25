@@ -1,0 +1,48 @@
+{
+    "test_samples": [
+        {
+            "text": "add 5 and 9",
+            "tag": "add"
+        },
+        {
+            "text": "what is 12 + 4",
+            "tag": "add"
+        },
+        {
+            "text": "subtract 7 from 20",
+            "tag": "subtract"
+        },
+        {
+            "text": "what is 15 - 3",
+            "tag": "subtract"
+        },
+        {
+            "text": "multiply 8 and 6",
+            "tag": "multiply"
+        },
+        {
+            "text": "what is 9 * 5",
+            "tag": "multiply"
+        },
+        {
+            "text": "divide 40 by 8",
+            "tag": "divide"
+        },
+        {
+            "text": "what is 100 / 4",
+            "tag": "divide"
+        },
+        {
+            "text": "area of a rectangle with 5 and 9",
+            "tag": "area_rectangle"
+        },
+        {
+            "text": "calculate area",
+            "tag": "area_rectangle"
+        },
+        {
+            "text": "perimeter of a rectangle with 4 and 7",
+            "tag": "perimeter_rectangle"
+        }
+    ]
+}
