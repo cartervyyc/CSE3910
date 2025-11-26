@@ -1,5 +1,5 @@
 {
-    "model_version": "0.0.0",
+    "model_version": "GOURMET-0.0.3",
     "training_samples": 30,
     "vocab_size": 104,
     "preprocessing": {

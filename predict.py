@@ -1,25 +1,38 @@
 import random, pickle, json, sys, re
 from nltk.tokenize import sent_tokenize
+import os
 
 # --------------------- LOAD GENERAL MODEL ---------------------
-with open("model/model.pkl", "rb") as savedModel:
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+MODEL_PATH = os.path.join(BASE_DIR, "model/model.pkl")
+VECTORIZER_PATH = os.path.join(BASE_DIR, "model/vectorizer.pkl")
+INTENTS_PATH = os.path.join(BASE_DIR, "model/intents.json")
+
+with open(MODEL_PATH, "rb") as savedModel:
     model = pickle.load(savedModel)
 
-with open("model/vectorizer.pkl", "rb") as savedVectorizer:
+with open(VECTORIZER_PATH, "rb") as savedVectorizer:
     vectorizer = pickle.load(savedVectorizer)
 
-with open("model/intents.json", "r") as savedData:
-    data = json.load(savedData)
+with open(INTENTS_PATH) as f:
+    intents = json.load(f)
 
 # --------------------- LOAD MATH MODEL ---------------------
-with open("math_model/math_model.pkl", "rb") as savedModel:
+
+MATH_MODEL_PATH = os.path.join(BASE_DIR, "math_model/math_model.pkl")
+MATH_VECTORIZER_PATH = os.path.join(BASE_DIR, "math_model/math_vectorizer.pkl")
+MATH_INTENTS_PATH = os.path.join(BASE_DIR, "math_model/math_intents.json")
+
+with open(MATH_MODEL_PATH, "rb") as savedModel:
     math_model = pickle.load(savedModel)
 
-with open("math_model/math_vectorizer.pkl", "rb") as savedVectorizer:
+with open(MATH_VECTORIZER_PATH, "rb") as savedVectorizer:
     math_vectorizer = pickle.load(savedVectorizer)
 
-with open("math_model/math_intents.json", "r") as savedData:
-    math_data = json.load(savedData)
+with open(MATH_INTENTS_PATH) as f:
+    math_intents = json.load(f)
 
 # ---------------- HISTORY ----------------
 conversation_history = {
@@ -60,16 +73,34 @@ def get_general_response(text):
     print(f"{tag} {confidence}")
 
     if confidence > 0.30:
-        for intent in data["intents"]:
+        for intent in intents["intents"]:
             if intent["tag"] == tag:
                 return random.choice(intent["responses"])
             
-                r
     return ""
 
 
 # ---------------- MATH RESPONSE ----------------
 def get_math_response(text):
+
+    # Check for the actual character for each operation before sending to actual math model to prvent errors
+    if "+" in text:
+        nums = list(map(int, re.findall(r"\d+", text)))
+        if len(nums) >= 2:
+            return "The answer is " + str(nums[0] + nums[1])
+    elif "-" in text:
+        nums = list(map(int, re.findall(r"\d+", text)))
+        if len(nums) >= 2:
+            return "The answer is " + str(nums[0] - nums[1])
+    elif "*" in text:
+        nums = list(map(int, re.findall(r"\d+", text)))
+        if len(nums) >= 2:
+            return "The answer is " + str(nums[0] * nums[1])
+    elif "/" in text:
+        nums = list(map(int, re.findall(r"\d+", text)))
+        if len(nums) >= 2:
+            return "The answer is " + str(nums[0] / nums[1] if nums[1] != 0 else "undefined")
+
     cleaned = clean_text(text)
 
     vect = math_vectorizer.transform([cleaned])
@@ -77,6 +108,8 @@ def get_math_response(text):
 
     nums = re.findall(r"\d+", text)
     nums = list(map(int, nums))
+
+    print(f"{tag} {confidence}")
 
     if len(nums) < 2:
         return "Yo I need two numbers to do that."

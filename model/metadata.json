@@ -1,5 +1,5 @@
 {
-    "model_version": "0.0.2",
+    "model_version": "DILL-0.0.2",
     "training_samples": 129,
     "vocab_size": 278,
     "preprocessing": {

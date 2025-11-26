@@ -46,7 +46,7 @@ test_model()
 
 # Metadata (for version control purposes)
 metadata = {
-    "model_version": "0.0.0",
+    "model_version": "GOURMET-0.0.2",
     "training_samples": len(patterns),
     "vocab_size": len(vectorizer.vocabulary_),
     "preprocessing": {
