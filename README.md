@@ -73,27 +73,6 @@ python predict.py "hello there"
 python predict.py "what is 5 plus 3?"
 ```
 
-### Building the C++ Backend
-
-```bash
-cd backend
-./build.sh
-```
-
-This will:
-- Configure CMake with Python 3.11 and pybind11
-- Compile the C++ code
-- Create executable at `backend/bin/chatbot`
-
-### Running the C++ Chatbot
-
-```bash
-cd backend
-./run.sh
-```
-
-The run script automatically sets up the correct Python environment (PYTHONPATH, PYTHONHOME) for the C++ executable.
-
 ## Python Version
 
 All Python scripts now use **Python 3.11.14**. The virtual environment ensures consistent behavior across all scripts.
