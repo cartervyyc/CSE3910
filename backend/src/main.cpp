@@ -2,6 +2,7 @@
 #include <array>
 #include <memory>
 #include <string>
+#include "../include/httplib.h"
 
 std::string run_python(const std::string &input)
 {
@@ -29,13 +30,14 @@ std::string run_python(const std::string &input)
 
 int main()
 {
-    std::string user;
-    std::cout << "You: ";
-    getline(std::cin, user);
+    httplib::Server svr;
 
-    std::string response = run_python(user);
+    svr.Post("/ask", [](const httplib::Request &req, httplib::Response &res)
+             {
+        std::string msg = req.body;
+        std::string out = run_python(msg);
+        res.set_content(out, "text/plain"); });
 
-    std::cout << "Bot: " << response << std::endl;
-
-    return 0;
+    std::cout << "Server running http://localhost:5000\n";
+    svr.listen("0.0.0.0", 5000);
 }
