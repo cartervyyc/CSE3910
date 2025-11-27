@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickle - AI Chatbot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="chatbot-header">
+            <h1>Pickle AI</h1>
+            <p>Your friendly AI assistant</p>
+        </div>
+
+        <div class="chat-box" id="chatBox">
+            <div class="message bot-message">
+                <span class="bot-label">Pickle:</span>
+                <p>Hello! I'm Pickle, your AI assistant. How can I help you today?</p>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <input 
+                type="text" 
+                id="userInput" 
+                class="message-input" 
+                placeholder="Type your message..." 
+                autocomplete="off"
+            >
+            <button id="sendBtn" class="send-button">Send</button>
+        </div>
+
+        <div class="controls">
+            <div class="scrollbar-select">
+                <button id="changeScrollbarBtn" class="scrollbar-button" aria-haspopup="menu" aria-expanded="false">Scrollbar: <span id="currentScrollbar">Auto</span> ▾</button>
+                <div id="scrollbarDropdown" class="scrollbar-dropdown hidden" role="menu" aria-label="Scrollbar selector">
+                    <div class="scrollbar-item" role="menuitem" data-value="auto" tabindex="0">
+                        <div class="scrollbar-item-title">Auto</div>
+                        <div class="scrollbar-item-desc">Show on hover</div>
+                    </div>
+                    <div class="scrollbar-item" role="menuitem" data-value="always" tabindex="0">
+                        <div class="scrollbar-item-title">Always</div>
+                        <div class="scrollbar-item-desc">Always visible</div>
+                    </div>
+                    <div class="scrollbar-item" role="menuitem" data-value="thin" tabindex="0">
+                        <div class="scrollbar-item-title">Thin</div>
+                        <div class="scrollbar-item-desc">Compact</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="model-bar">
+                <div class="model-select">
+                    <button id="changeModelBtn" class="model-button" aria-haspopup="menu" aria-expanded="false">Model: <span id="currentModel">Dill</span> ▾</button>
+                    <div id="modelDropdown" class="model-dropdown hidden" role="menu" aria-label="Model selector">
+                        <div class="model-item" role="menuitem" data-value="Dill" tabindex="0">
+                            <div class="model-item-title">Dill</div>
+                            <div class="model-item-desc">Conversational</div>
+                        </div>
+                        <div class="model-item" role="menuitem" data-value="Cucumber" tabindex="0">
+                            <div class="model-item-title">Cucumber</div>
+                            <div class="model-item-desc">Math-focused</div>
+                        </div>
+                        <div class="model-item" role="menuitem" data-value="Gourmet" tabindex="0">
+                            <div class="model-item-title">Gourmet</div>
+                            <div class="model-item-desc">Premium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <small>Powered by AI | © 2025</small>
+        </div>
+    </div>
+
+    <!-- overlay scrollbar appended to body so it isn't clipped by container */ -->
+    <div id="overlayScrollbar" class="overlay-scrollbar" aria-hidden="true">
+        <div id="overlayThumb" class="overlay-thumb" role="scrollbar" aria-controls="chatBox" aria-orientation="vertical"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
