@@ -70,8 +70,6 @@ def get_general_response(text):
     conversation_history["last_tag"] = tag
     conversation_history["history"].append(cleaned)
 
-    print(f"{tag} {confidence}")
-
     if confidence > 0.30:
         for intent in intents["intents"]:
             if intent["tag"] == tag:
@@ -108,8 +106,6 @@ def get_math_response(text):
 
     nums = re.findall(r"\d+", text)
     nums = list(map(int, nums))
-
-    print(f"{tag} {confidence}")
 
     if len(nums) < 2:
         return "Yo I need two numbers to do that."

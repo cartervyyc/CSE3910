@@ -1,5 +1,5 @@
 ---
 triple:          'arm64-apple-darwin'
-binary-path:     '/Users/cartervandeneynden/Documents/Documents/School/Computer_Science_30/CSE3910/backend/src/main'
+binary-path:     main
 relocations:     []
 ...

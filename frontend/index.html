@@ -6,13 +6,16 @@
     <title>Pickle - AI Chatbot</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <div class="container">
+      <!-- HEADER -->
       <div class="chatbot-header">
         <h1>Pickle AI</h1>
         <p>Your friendly AI assistant</p>
       </div>
 
+      <!-- CHAT BOX -->
       <div class="chat-box" id="chatBox">
         <div class="message bot-message">
           <span class="bot-label">Pickle:</span>
@@ -20,6 +23,7 @@
         </div>
       </div>
 
+      <!-- INPUT -->
       <div class="input-container">
         <input
           type="text"
@@ -31,6 +35,7 @@
         <button id="sendBtn" class="send-button">Send</button>
       </div>
 
+      <!-- SCROLLBAR DROPDOWN -->
       <div class="controls">
         <div class="scrollbar-select">
           <button
@@ -41,6 +46,7 @@
           >
             Scrollbar: <span id="currentScrollbar">Auto</span> ▾
           </button>
+
           <div
             id="scrollbarDropdown"
             class="scrollbar-dropdown hidden"
@@ -56,6 +62,7 @@
               <div class="scrollbar-item-title">Auto</div>
               <div class="scrollbar-item-desc">Show on hover</div>
             </div>
+
             <div
               class="scrollbar-item"
               role="menuitem"
@@ -65,6 +72,7 @@
               <div class="scrollbar-item-title">Always</div>
               <div class="scrollbar-item-desc">Always visible</div>
             </div>
+
             <div
               class="scrollbar-item"
               role="menuitem"
@@ -78,6 +86,7 @@
         </div>
       </div>
 
+      <!-- FOOTER + MODEL SELECT -->
       <div class="footer">
         <div class="model-bar">
           <div class="model-select">
@@ -89,6 +98,7 @@
             >
               Model: <span id="currentModel">Dill</span> ▾
             </button>
+
             <div
               id="modelDropdown"
               class="model-dropdown hidden"
@@ -104,6 +114,7 @@
                 <div class="model-item-title">Dill</div>
                 <div class="model-item-desc">Conversational</div>
               </div>
+
               <div
                 class="model-item"
                 role="menuitem"
@@ -113,6 +124,7 @@
                 <div class="model-item-title">Cucumber</div>
                 <div class="model-item-desc">Math-focused</div>
               </div>
+
               <div
                 class="model-item"
                 role="menuitem"
@@ -125,11 +137,12 @@
             </div>
           </div>
         </div>
+
         <small>Powered by AI | © 2025</small>
       </div>
     </div>
 
-    <!-- overlay scrollbar appended to body so it isn't clipped by container */ -->
+    <!-- OVERLAY SCROLLBAR (required for your JS) -->
     <div id="overlayScrollbar" class="overlay-scrollbar" aria-hidden="true">
       <div
         id="overlayThumb"
@@ -140,6 +153,7 @@
       ></div>
     </div>
 
+    <!-- JS -->
     <script src="script.js"></script>
   </body>
 </html>
