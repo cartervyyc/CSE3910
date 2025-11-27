@@ -4,8 +4,39 @@ const chatBox = document.getElementById('chatBox');
 const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 
-// API endpoint (update this to match your backend)
-const API_URL = 'http://localhost:5000/api/chat';
+// ===== LOCAL MODEL INTEGRATION =====
+// C++ Backend connection configuration
+const cppBackendConfig = {
+    // Update these to match your C++ server details
+    host: 'localhost',
+    port: 5000, // Change to your C++ server port
+    useWebSocket: false, // Set to true if using WebSocket, false for HTTP
+};
+
+// Model configuration - update with your model paths when ready
+const modelConfig = {
+    Dill: {
+        name: 'Dill',
+        description: 'Conversational',
+        modelPath: null, // Not used when connecting to C++ backend
+        loaded: false,
+        instance: null
+    },
+    Cucumber: {
+        name: 'Cucumber',
+        description: 'Math-focused',
+        modelPath: null, // Not used when connecting to C++ backend
+        loaded: false,
+        instance: null
+    },
+    Gourmet: {
+        name: 'Gourmet',
+        description: 'Premium',
+        modelPath: null, // Not used when connecting to C++ backend
+        loaded: false,
+        instance: null
+    }
+};
 
 // Model selection (persisted)
 let currentModel = localStorage.getItem('pickleModel') || 'Dill';
@@ -197,22 +228,10 @@ async function sendMessage() {
     displayUserMessage(message);
     userInput.value = '';
     
-    // Send to backend
+    // Get response from C++ backend
     try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ message: message, model: currentModel })
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        displayBotMessage(data.reply || data.response || 'Sorry, I could not process your message.');
+        const response = await getCppBackendResponse(currentModel, message);
+        displayBotMessage(response);
     } catch (error) {
         console.error('Error:', error);
         displayBotMessage('Sorry, I encountered an error. Please try again.');
@@ -221,6 +240,34 @@ async function sendMessage() {
         userInput.disabled = false;
         sendBtn.disabled = false;
         userInput.focus();
+    }
+}
+
+// Get response from the C++ backend
+async function getCppBackendResponse(modelName, userMessage) {
+    const url = `http://${cppBackendConfig.host}:${cppBackendConfig.port}/api/chat`;
+    
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: userMessage,
+                model: modelName
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.reply || data.response || 'Sorry, I could not process your message.';
+    } catch (error) {
+        console.error('C++ Backend error:', error);
+        throw error;
     }
 }
 
