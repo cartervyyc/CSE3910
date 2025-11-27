@@ -8,7 +8,6 @@ Pickle is a local AI chatbot project that uses a Python model backend with a C++
 
 - [Features](#features)
 - [Requirements](#requirements)
-- [Project Structure](#project-structure)
 - [Setup & Usage](#setup--usage)
 - [How It Works](#how-it-works)
 - [Customization](#customization)
