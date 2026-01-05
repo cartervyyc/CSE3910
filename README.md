@@ -57,7 +57,7 @@ This will:
 - Create and activate a Python virtual environment (`venv`)
 - Install Python dependencies (`pip install -r requirements.txt`)
 - Compile the C++ backend (`main.cpp`)
-- Start the backend server on `http://localhost:5000`
+- Start the backend server on `http://localhost:5001`
 - Start a frontend web server on `http://localhost:8000`
 
 3. **Open the frontend in your browser:**
@@ -98,7 +98,7 @@ Go to: `http://localhost:8000`
   Make sure `predict.py` path in `main.cpp` is correct relative to the C++ binary.
 
 - **Port conflicts:**  
-  Ensure ports `5000` (backend) and `8000` (frontend) are free.
+  Ensure ports `5001` (backend) and `8000` (frontend) are free.
 
 - **Dependencies missing:**  
   Activate the virtual environment manually:
