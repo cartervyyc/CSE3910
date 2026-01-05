@@ -237,13 +237,26 @@ async function sendMessage() {
     displayUserMessage(message);
     userInput.value = '';
     
+    // Insert a bot placeholder so we can update it when the reply arrives
+    const placeholder = document.createElement('div');
+    placeholder.className = 'message bot-message pending-bot';
+    placeholder.innerHTML = `\n        <span class="bot-label">Pickle:</span>\n        <p>Thinking...</p>\n    `;
+    chatBox.appendChild(placeholder);
+    scrollToBottom();
+
     // Get response from C++ backend
     try {
         const response = await getCppBackendResponse(currentModel, message);
-        displayBotMessage(response);
+        // replace placeholder content instead of adding a new message
+        const p = placeholder.querySelector('p');
+        if (p) p.textContent = response;
+        placeholder.classList.remove('pending-bot');
+        updateMessageCount();
     } catch (error) {
         console.error('Error:', error);
-        displayBotMessage('Sorry, I encountered an error. Please try again.');
+        const p = placeholder.querySelector('p');
+        if (p) p.textContent = 'Sorry, I encountered an error. Please try again.';
+        placeholder.classList.remove('pending-bot');
     } finally {
         // Re-enable input and button after AI response
         userInput.disabled = false;
@@ -269,11 +282,20 @@ async function getCppBackendResponse(modelName, userMessage) {
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            // attempt to get body text for detailed error
+            let bodyText = '';
+            try { bodyText = await response.text(); } catch (e) { /* ignore */ }
+            throw new Error(`HTTP ${response.status}: ${bodyText || response.statusText}`);
         }
 
-        const data = await response.json();
-        return data.reply || data.response || 'Sorry, I could not process your message.';
+        const contentType = response.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+            const data = await response.json();
+            return data.reply || data.response || data.result || JSON.stringify(data);
+        }
+        // Fallback to plain text
+        const text = await response.text();
+        return text || 'Sorry, I could not process your message.';
     } catch (error) {
         console.error('C++ Backend error:', error);
         throw error;
