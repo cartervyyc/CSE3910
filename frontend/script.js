@@ -9,7 +9,7 @@ const sendBtn = document.getElementById("sendBtn");
 const cppBackendConfig = {
   // Update these to match your C++ server details
   host: "localhost",
-  port: 5001, // Change to your C++ server port (5000 often used by macOS ControlCenter/AirPlay)
+  port: 5001, // Change to your C++ server port
   useWebSocket: false, // Set to true if using WebSocket, false for HTTP
 };
 
@@ -53,6 +53,15 @@ const scrollbarDropdown = document.getElementById("scrollbarDropdown");
 const currentScrollbarEl = document.getElementById("currentScrollbar");
 const overlayScrollbar = document.getElementById("overlayScrollbar");
 const overlayThumb = document.getElementById("overlayThumb");
+
+// New UI elements for theme and text size
+const changeThemeBtn = document.getElementById("changeThemeBtn");
+const themeDropdown = document.getElementById("themeDropdown");
+const currentThemeEl = document.getElementById("currentTheme");
+const messageCount = document.getElementById("messageCount");
+
+// Persisted preferences
+let currentTheme = localStorage.getItem("pickleTheme") || "light";
 
 let overlayDragging = false;
 let dragStartY = 0;
@@ -270,21 +279,32 @@ async function sendMessage() {
 
 // Get response from the C++ backend
 async function getCppBackendResponse(modelName, userMessage) {
-  const url = `http://localhost:5001/api/chat`;
+  const url = `http://${cppBackendConfig.host}:${cppBackendConfig.port}/api/chat`;
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      message: userMessage,
-      model: modelName,
-    }),
-  });
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: userMessage,
+        model: modelName,
+      }),
+    });
 
-  if (!response.ok) throw new Error("Backend error " + response.status);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-  const data = await response.json();
-  return data.reply;
+    const data = await response.json();
+    return (
+      data.reply || data.response || "Sorry, I could not process your message."
+    );
+  } catch (error) {
+    console.error("C++ Backend error:", error);
+    throw error;
+  }
 }
 
 function displayUserMessage(message) {
@@ -296,6 +316,7 @@ function displayUserMessage(message) {
     `;
   chatBox.appendChild(messageDiv);
   scrollToBottom();
+  updateMessageCount();
 }
 
 function displayBotMessage(message) {
@@ -307,6 +328,7 @@ function displayBotMessage(message) {
     `;
   chatBox.appendChild(messageDiv);
   scrollToBottom();
+  updateMessageCount();
 }
 
 // --- Model dropdown logic ---
@@ -316,9 +338,25 @@ if (currentModelEl) currentModelEl.textContent = currentModel;
 function positionModelDropdown() {
   if (!modelDropdown || !changeModelBtn) return;
   const rect = changeModelBtn.getBoundingClientRect();
+  const dropdownWidth = 200;
+  const dropdownHeight = 150;
+
   modelDropdown.style.position = "fixed";
-  modelDropdown.style.top = rect.bottom + 8 + "px";
-  modelDropdown.style.right = window.innerWidth - rect.right + "px";
+
+  // Position below button, with fallback above if no space
+  let top = rect.bottom + 8;
+  if (top + dropdownHeight > window.innerHeight) {
+    top = Math.max(8, rect.top - dropdownHeight - 8);
+  }
+  modelDropdown.style.top = top + "px";
+
+  // Align with button, adjust left if needed to stay in viewport
+  let left = rect.left;
+  if (left + dropdownWidth > window.innerWidth - 8) {
+    left = Math.max(8, window.innerWidth - dropdownWidth - 8);
+  }
+  modelDropdown.style.left = left + "px";
+  modelDropdown.style.right = "auto";
 }
 
 function toggleModelDropdown(open) {
@@ -371,9 +409,25 @@ window.addEventListener("resize", () => {
 function positionScrollbarDropdown() {
   if (!scrollbarDropdown || !changeScrollbarBtn) return;
   const rect = changeScrollbarBtn.getBoundingClientRect();
+  const dropdownWidth = 200;
+  const dropdownHeight = 150;
+
   scrollbarDropdown.style.position = "fixed";
-  scrollbarDropdown.style.top = rect.bottom + 8 + "px";
-  scrollbarDropdown.style.right = window.innerWidth - rect.right + "px";
+
+  // Position below button, with fallback above if no space
+  let top = rect.bottom + 8;
+  if (top + dropdownHeight > window.innerHeight) {
+    top = Math.max(8, rect.top - dropdownHeight - 8);
+  }
+  scrollbarDropdown.style.top = top + "px";
+
+  // Align with button, adjust left if needed to stay in viewport
+  let left = rect.left;
+  if (left + dropdownWidth > window.innerWidth - 8) {
+    left = Math.max(8, window.innerWidth - dropdownWidth - 8);
+  }
+  scrollbarDropdown.style.left = left + "px";
+  scrollbarDropdown.style.right = "auto";
 }
 
 function toggleScrollbarDropdown(open) {
@@ -477,4 +531,103 @@ function escapeHtml(text) {
     "'": "&#039;",
   };
   return text.replace(/[&<>"']/g, (m) => map[m]);
+}
+
+// --- Theme functionality ---
+function applyTheme() {
+  if (currentTheme === "dark") {
+    document.body.classList.add("dark-theme");
+  } else {
+    document.body.classList.remove("dark-theme");
+  }
+  if (currentThemeEl)
+    currentThemeEl.textContent =
+      currentTheme.charAt(0).toUpperCase() + currentTheme.slice(1);
+}
+
+applyTheme();
+
+function positionThemeDropdown() {
+  if (!themeDropdown || !changeThemeBtn) return;
+  const rect = changeThemeBtn.getBoundingClientRect();
+  const dropdownWidth = 200;
+  const dropdownHeight = 100;
+
+  themeDropdown.style.position = "fixed";
+
+  let top = rect.bottom + 8;
+  if (top + dropdownHeight > window.innerHeight) {
+    top = Math.max(8, rect.top - dropdownHeight - 8);
+  }
+  themeDropdown.style.top = top + "px";
+
+  let left = rect.left;
+  if (left + dropdownWidth > window.innerWidth - 8) {
+    left = Math.max(8, window.innerWidth - dropdownWidth - 8);
+  }
+  themeDropdown.style.left = left + "px";
+  themeDropdown.style.right = "auto";
+}
+
+function toggleThemeDropdown(open) {
+  if (!themeDropdown) return;
+  const isOpen = !themeDropdown.classList.contains("hidden");
+  const shouldOpen = typeof open === "boolean" ? open : !isOpen;
+  if (shouldOpen) {
+    themeDropdown.classList.remove("hidden");
+    changeThemeBtn.setAttribute("aria-expanded", "true");
+    positionThemeDropdown();
+  } else {
+    themeDropdown.classList.add("hidden");
+    changeThemeBtn.setAttribute("aria-expanded", "false");
+  }
+}
+
+if (changeThemeBtn) {
+  changeThemeBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleThemeDropdown();
+  });
+}
+
+document.addEventListener("click", (e) => {
+  if (!themeDropdown) return;
+  if (!themeDropdown.classList.contains("hidden")) {
+    if (!themeDropdown.contains(e.target) && e.target !== changeThemeBtn) {
+      toggleThemeDropdown(false);
+    }
+  }
+});
+
+window.addEventListener("resize", () => {
+  if (!themeDropdown || themeDropdown.classList.contains("hidden")) return;
+  positionThemeDropdown();
+});
+
+if (themeDropdown) {
+  const items = themeDropdown.querySelectorAll(".theme-item");
+  items.forEach((item) => {
+    item.addEventListener("click", (ev) => {
+      const v = item.dataset.value;
+      if (v) {
+        currentTheme = v;
+        localStorage.setItem("pickleTheme", currentTheme);
+        applyTheme();
+      }
+      toggleThemeDropdown(false);
+    });
+    item.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter" || ev.key === " ") {
+        ev.preventDefault();
+        item.click();
+      }
+    });
+  });
+}
+
+// --- Text Size functionality ---
+function updateMessageCount() {
+  const messages = chatBox.querySelectorAll(".message");
+  const count = messages.length;
+  if (messageCount) messageCount.textContent = count;
 }
