@@ -31,15 +31,34 @@ class General_Model(Model):
         confidence = max(self.model.predict_proba(vect)[0])
         return tag, confidence
 
+    def exact_match(self, cleaned_text):
+        for intent in self.intents["intents"]:
+            for pattern in intent["patterns"]:
+                if cleaned_text == self.clean_text(pattern):
+                    return intent["tag"]
+        return None
+
     def get_response(self, text, conversation_history):
         cleaned = self.clean_text(text)
+
+        # ---- EXACT MATCH OVERRIDE ----
+        exact_tag = self.exact_match(cleaned)
+        if exact_tag:
+            conversation_history["last_tag"] = exact_tag
+            conversation_history["history"].append(cleaned)
+
+            for intent in self.intents["intents"]:
+                if intent["tag"] == exact_tag:
+                    return random.choice(intent["responses"])
+
+        # ---- ML FALLBACK ----
         vect = self.vectorizer.transform([cleaned])
         tag, confidence = self.predict(vect)
 
         conversation_history["last_tag"] = tag
         conversation_history["history"].append(cleaned)
 
-        if confidence > 0.30:
+        if confidence > 0.2:
             for intent in self.intents["intents"]:
                 if intent["tag"] == tag:
                     return random.choice(intent["responses"])
@@ -56,7 +75,6 @@ class Math_Model(Model):
         return tag, confidence
 
     def get_response(self, text):
-        # character-based shortcuts (unchanged behavior)
         if "+" in text:
             nums = list(map(int, re.findall(r"\d+", text)))
             if len(nums) >= 2:
@@ -128,11 +146,12 @@ class Manager:
                 continue
 
             if self.is_math_input(s):
-                responses.append(self.math_model.get_response(s))
+                resp = self.math_model.get_response(s)
             else:
-                responses.append(
-                    self.general_model.get_response(s, self.conversation_history)
-                )
+                resp = self.general_model.get_response(s, self.conversation_history)
+
+            if resp:
+                responses.append(resp)
 
         if responses:
             return " ".join(responses)

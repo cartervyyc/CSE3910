@@ -1,7 +1,7 @@
 {
     "model_version": "DILL-0.0.2",
-    "training_samples": 134,
-    "vocab_size": 288,
+    "training_samples": 170,
+    "vocab_size": 380,
     "preprocessing": {
         "lowercase": true,
         "punctuation_removed": true
